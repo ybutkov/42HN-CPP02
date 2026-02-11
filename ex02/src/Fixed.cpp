@@ -6,56 +6,64 @@
 /*   By: ybutkov <ybutkov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 22:43:34 by ybutkov           #+#    #+#             */
-/*   Updated: 2026/02/11 21:02:57 by ybutkov          ###   ########.fr       */
+/*   Updated: 2026/02/11 22:45:04 by ybutkov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
 #include <cmath>
 #include <iostream>
+#include <limits>
 
-Fixed::Fixed(void)
-	: rawBits(0)
-{
-	std::cout << "Default constructor called" << std::endl;
-}
+Fixed::Fixed(void): rawBits(0) {}
 
-Fixed::Fixed(const Fixed &other)
-// Fixed::Fixed(const Fixed &other) : rawBits(other.rawBits)
-{
-	std::cout << "Copy constructor called" << std::endl;
-	// value = other.getRawBits();
-	*this = other;
-}
+Fixed::Fixed(const Fixed &other) : rawBits(other.rawBits) {}
 
-Fixed::Fixed(int const intValue)
-{
-	std::cout << "Int constructor called" << std::endl;
-	rawBits = intValue << NUMBER_OF_FRACTIONAL_BITS;
-}
+Fixed::Fixed(int const intValue): rawBits(intValue << NUMBER_OF_FRACTIONAL_BITS) {}
 
 Fixed::Fixed(float const floatValue)
 {
-	std::cout << "Float constructor called" << std::endl;
 	int64_t	tmpBigInt;
 	tmpBigInt = static_cast<int64_t>(std::roundf(floatValue
-				* (1 << NUMBER_OF_FRACTIONAL_BITS)));
+				* (1LL << NUMBER_OF_FRACTIONAL_BITS)));
 	this->rawBits = static_cast<int>(tmpBigInt);
 }
 
-Fixed::~Fixed(void)
-{
-	std::cout << "Destructor called" << std::endl;
-}
+Fixed::~Fixed(void) {}
 
 Fixed &Fixed::operator=(const Fixed &other)
 {
-	std::cout << "Copy assignment operator called" << std::endl;
 	if (this != &other)
 	{
 		this->rawBits = other.rawBits;
 	}
 	return (*this);
+}
+
+Fixed& Fixed::operator++()
+{
+	rawBits++;
+	return *this;	
+}
+
+Fixed Fixed::operator++(int)
+{
+	Fixed res = *this;
+	++*this;
+	return res;
+}
+
+Fixed& Fixed::operator--()
+{
+	rawBits--;
+	return *this;	
+}
+
+Fixed Fixed::operator--(int)
+{
+	Fixed res = *this;
+	--*this;
+	return res;
 }
 
 bool Fixed::operator<(const Fixed &other) const
@@ -131,22 +139,40 @@ std::ostream &operator<<(std::ostream &os, const Fixed &fixed)
 
 int Fixed::getRawBits(void) const
 {
-	std::cout << "getRawBits member function called" << std::endl;
 	return (rawBits);
 }
 
 void Fixed::setRawBits(int const raw)
 {
-	std::cout << "setRawBits member function called" << std::endl;
 	rawBits = raw;
 }
 
 float Fixed::toFloat(void) const
 {
-	return (static_cast<float>(rawBits) / (1 << NUMBER_OF_FRACTIONAL_BITS));
+	return (static_cast<float>(static_cast<double>(rawBits) / (1LL << NUMBER_OF_FRACTIONAL_BITS)));
 }
 
 int Fixed::toInt(void) const
 {
 	return (rawBits >> NUMBER_OF_FRACTIONAL_BITS);
+}
+
+Fixed& Fixed::min(Fixed& a, Fixed& b)
+{
+	return a < b ? a : b;
+}
+
+const Fixed& Fixed::min(const Fixed& a, const Fixed& b)
+{
+	return a < b ? a : b;
+}
+
+Fixed& Fixed::max(Fixed& a, Fixed& b)
+{
+	return a > b ? a : b;
+}
+
+const Fixed& Fixed::max(const Fixed& a, const Fixed& b)
+{
+	return a > b ? a : b;
 }
