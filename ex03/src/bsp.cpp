@@ -6,7 +6,7 @@
 /*   By: ybutkov <ybutkov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 22:44:27 by ybutkov           #+#    #+#             */
-/*   Updated: 2026/02/12 23:53:57 by ybutkov          ###   ########.fr       */
+/*   Updated: 2026/02/13 16:35:31 by ybutkov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 namespace
 {
 
-Fixed	sign(const Point &p1, const Point &p2, const Point &p3)
+Fixed	sign(const Point& p1, const Point& p2, const Point& p3)
 {
 	return (p1.getX() - p3.getX()) * (p2.getY() - p3.getY()) 
          - (p2.getX() - p3.getX()) * (p1.getY() - p3.getY());
