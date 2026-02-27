@@ -10,6 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef POINT_HPP
+# define POINT_HPP
+
 #include "Fixed.hpp"
 
 class Point
@@ -24,3 +27,5 @@ public:
     const Fixed& getX() const;
     const Fixed& getY() const;
 };
+
+#endif
